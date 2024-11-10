@@ -40,6 +40,8 @@ class MainActivity : ComponentActivity() {
                         tipPercent = tipPercent,
                         onValueChange = { tipPercent = it }
                     )
+
+                    TipAndTotalDisplay(tipPercent = tipPercent, totalAmount = billAmount)
                 }
             }
         }
@@ -67,6 +69,18 @@ fun TipPercentageSlider(tipPercent: Float, onValueChange: (Float) -> Unit) {
             valueRange = 0f..30f,
             modifier = Modifier.fillMaxWidth()
         )
+    }
+}
+
+@Composable
+fun TipAndTotalDisplay(tipPercent: Float, totalAmount: String) {
+    val billAmount = totalAmount.toFloatOrNull() ?: 0f
+    val tipAmount = billAmount * (tipPercent / 100)
+    val totalAfterTip = billAmount + tipAmount
+
+    Column {
+        Text(text = "Tip Amount: $${"%.2f".format(tipAmount)}", style = MaterialTheme.typography.headlineSmall)
+        Text(text = "Total with Tip: $${"%.2f".format(totalAfterTip)}", style = MaterialTheme.typography.headlineSmall)
     }
 }
 
