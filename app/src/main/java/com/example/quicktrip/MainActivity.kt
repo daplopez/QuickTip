@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -28,10 +30,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             var billAmount by remember { mutableStateOf("") }
+            var tipPercent by remember { mutableStateOf(15f) }
 
             QuickTripTheme {
                 Column(modifier = Modifier.fillMaxSize()) {
                     BillAmountInput(billAmount = billAmount, onValueChange = { billAmount = it })
+
+                    TipPercentageSlider(
+                        tipPercent = tipPercent,
+                        onValueChange = { tipPercent = it }
+                    )
                 }
             }
         }
@@ -47,6 +55,19 @@ fun BillAmountInput(billAmount: String, onValueChange: (String) -> Unit) {
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
     )
+}
+
+@Composable
+fun TipPercentageSlider(tipPercent: Float, onValueChange: (Float) -> Unit) {
+    Column {
+        Text(text = "Tip: ${tipPercent.toInt()}%", style = MaterialTheme.typography.bodySmall)
+        Slider(
+            value = tipPercent,
+            onValueChange = onValueChange,
+            valueRange = 0f..30f,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Preview(showBackground = true)
